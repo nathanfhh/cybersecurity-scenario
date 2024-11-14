@@ -7,7 +7,26 @@ import requestEmbedding from "@/utility/embedding.js";
 import {default as embedData} from "@/assets/embed-data.json";
 import {z} from "zod";
 import chatInference from "@/utility/chatInference.js";
+import rankEmbeddings from "@/utility/vector.js";
+import markdownit from 'markdown-it';
+import hljs from 'highlight.js';
+import python from 'highlight.js/lib/languages/python.js';
+import 'highlight.js/styles/monokai-sublime.css';
 
+hljs.registerLanguage('python', python);
+
+const md = markdownit({
+  highlight: function (str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return hljs.highlight(str, {language: lang}).value;
+      } catch (__) {
+      }
+    }
+
+    return ''; // use external default escaping
+  }
+});
 const plotStore = usePlotStore()
 const {plotContent} = storeToRefs(plotStore)
 const answerModel = reactive({})
@@ -187,7 +206,7 @@ const getFinalResultImageSrc = (averageScore) => {
         </span>
         <span v-else-if="item.type === 'questions'">
           <div v-if="item.subtype === 'free-type'">
-            <span>{{ item.question }}</span>
+            <span v-html="md.render(item.question)"/>
             <ElInput
                 v-model="answerModel[index].rawAnswer"
                 placeholder="Please input"
@@ -252,5 +271,14 @@ const getFinalResultImageSrc = (averageScore) => {
 .align-right {
   text-align: right;
   margin-top: 10px;
+}
+</style>
+<style>
+pre > code.language-python   {
+  background-color: #282C34;
+  padding: 15px;
+  border-radius: 10px;
+  width: 100%;
+  display: block;
 }
 </style>
