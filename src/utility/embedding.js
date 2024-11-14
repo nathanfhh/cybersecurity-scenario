@@ -10,7 +10,12 @@ const calculatePrice = (model, tokens) => {
     }
     return mapper[model] * tokens * 31
 }
+const cachedEmbeddings = {}
 export default async function requestEmbedding(text) {
+    if (cachedEmbeddings[text]) {
+        console.log("Using cached embedding for", text)
+        return cachedEmbeddings[text]
+    }
     const OpenAPIKeyStore = useOpenAPIKeyStore()
     const {openaiAPIKey} = storeToRefs(OpenAPIKeyStore)
     const PriceStore = usePriceStore()
@@ -28,6 +33,7 @@ export default async function requestEmbedding(text) {
         });
         console.log(embeddingResult);
         priceTotal.value += calculatePrice(useEmbedModel, embeddingResult.usage.total_tokens)
+        cachedEmbeddings[text] = embeddingResult
         return embeddingResult
     } catch (error) {
         console.error(error)
