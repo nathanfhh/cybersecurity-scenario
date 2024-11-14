@@ -43,6 +43,7 @@ const gradeThis = async (index, item) => {
         confirmButtonText: '確定',
         type: 'warning'
       });
+      isTabElementLoading.value = false
       return
     }
     if (item.subtype === 'free-type') {
@@ -76,26 +77,6 @@ const nextTab = async (index) => {
   activeName.value = index + 1
 }
 
-// Function to calculate cosine similarity
-function cosineSimilarity(embedding1, embedding2) {
-  const dotProduct = embedding1.reduce((sum, val, index) => sum + val * embedding2[index], 0);
-  const magnitude1 = Math.sqrt(embedding1.reduce((sum, val) => sum + val * val, 0));
-  const magnitude2 = Math.sqrt(embedding2.reduce((sum, val) => sum + val * val, 0));
-  return dotProduct / (magnitude1 * magnitude2);
-}
-
-// Function to rank embeddings based on similarity
-function rankEmbeddings(targetEmbedding, embeddings) {
-  console.log(embeddings)
-  return Object.entries(embeddings)
-      .map(([fileName, {embedding}]) => {
-        return {
-          fileName,
-          similarity: cosineSimilarity(targetEmbedding, embedding)
-        }
-      })
-      .sort((a, b) => b.similarity - a.similarity); // Sort in descending order of similarity
-}
 
 const assignUniqueImage = (index, imageCosineResult) => {
   for (let i = 0; i < imageCosineResult.length; i++) {
@@ -184,32 +165,43 @@ const getFinalResultImageSrc = (averageScore) => {
 
 <template>
   <div
-      style="height: 50vh;"
+      style="height: 100vh;"
       v-if="plotContent?.scenario?.length > 0"
   >
-    <el-tabs
-        stretch
-        v-model="activeName"
-        @tab-click="()=>{}"
-        v-loading="isTabElementLoading"
-    >
-      <el-tab-pane
-
-          v-for="(item, index) in plotContent.scenario"
-          :key="index"
-          :label="index.toString()"
-          :name="index"
+    <el-text size="large">
+      <el-tabs
+          stretch
+          v-model="activeName"
+          @tab-click="()=>{}"
+          v-loading="isTabElementLoading"
       >
+        <el-tab-pane
+
+            v-for="(item, index) in plotContent.scenario"
+            :key="index"
+            :label="index.toString()"
+            :name="index"
+        >
         <span v-if="item.type === 'plot'">
           <span>{{ item.content }}</span>
           <img v-if="imageChosen[index]" :src="imageChosen[index]" alt="plot" style="width: 100%; height: 100%"/>
         </span>
-        <span v-else-if="item.type === 'questions'">
+          <span v-else-if="item.type === 'questions'">
+          <div style="margin-bottom: 10px">
+            <ElAlert
+                :closable="false"
+                show-icon
+                v-if="isNumeric(answerModel[index]?.gradeResult?.score)"
+                :title="answerModel[index].gradeResult.score >= 80 ? '正確' : '錯誤'"
+                :type="answerModel[index].gradeResult.score >= 80 ? 'success' : 'error'"
+                :description="answerModel[index].gradeResult.comment"
+            />
+          </div>
           <div v-if="item.subtype === 'free-type'">
             <span v-html="md.render(item.question)"/>
             <ElInput
                 v-model="answerModel[index].rawAnswer"
-                placeholder="Please input"
+                placeholder="請提供您的看法"
                 type="textarea"
                 :rows="6"
             />
@@ -217,11 +209,14 @@ const getFinalResultImageSrc = (averageScore) => {
           <div v-else>
             <span>{{ item.question }}</span>
             <div>
-              <ElRadioGroup v-model="answerModel[index].rawAnswer">
+              <ElRadioGroup v-model="answerModel[index].rawAnswer" style="width: 100%">
               <ElRadio
+                  size="large"
+                  border
                   v-for="(content, optionKey)  in item.content"
                   :key='optionKey'
                   :value='optionKey'
+                  style="width: 100%; margin-top: 10px;"
               >{{ content }}</ElRadio>
             </ElRadioGroup>
             </div>
@@ -231,39 +226,36 @@ const getFinalResultImageSrc = (averageScore) => {
               批改
             </ElButton>
           </div>
-          <div>
-              <ElAlert
-                  show-icon
-                  v-if="isNumeric(answerModel[index]?.gradeResult?.score)"
-                  :title="answerModel[index].gradeResult.score >= 80 ? '正確' : '錯誤'"
-                  :type="answerModel[index].gradeResult.score >= 80 ? 'success' : 'error'"
-                  :description="answerModel[index].gradeResult.comment"
-              />
-          </div>
         </span>
 
-        <div class="align-right"
-             v-show="item.type !== 'questions' || (item.type === 'questions' && isNumeric(answerModel[index]?.gradeResult?.score))">
-          <ElButton type="primary" @click="nextTab(index)">
-            Next
-          </ElButton>
-        </div>
-      </el-tab-pane>
-      <el-tab-pane
-          disabled
-          label="總結"
-          :name="plotContent.scenario.length"
-          lazy
-      >
-        平均分數：{{ averageScore.toFixed(2) }}
-        <br>
-        應變結果：{{ averageScore > 70 ? '成功' : '失敗' }}
-        <img
-            :src="getFinalResultImageSrc(averageScore)"
-            alt="final-result" style="width: 100%; height: 100%"
-        />
-      </el-tab-pane>
-    </el-tabs>
+          <div class="align-right"
+               v-show="item.type !== 'questions' || (item.type === 'questions' && isNumeric(answerModel[index]?.gradeResult?.score))">
+            <ElButton type="primary" @click="nextTab(index)">
+              Next
+            </ElButton>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane
+            disabled
+            label="總結"
+            :name="plotContent.scenario.length"
+            lazy
+        >
+          <el-result
+              :icon="averageScore >= 70 ? 'success' : 'error'"
+              :title="averageScore >= 70 ? '成功' : '失敗'"
+              :sub-title="`分數： ${averageScore.toFixed(2) }`"
+          >
+            <template #extra>
+              <img
+                  :src="getFinalResultImageSrc(averageScore)"
+                  alt="final-result" style="width: 100%; height: 100%"
+              />
+            </template>
+          </el-result>
+        </el-tab-pane>
+      </el-tabs>
+    </el-text>
   </div>
 </template>
 
