@@ -54,7 +54,7 @@ const columns = computed(() => [
   },
   {
     key: 'comment',
-    title: '評語',
+    title: '解析',
     dataKey: 'comment',
     width: windowWidth / 11 * 3
   },
@@ -72,11 +72,15 @@ watch(
       console.log("Gather data for tableData")
       tableData.value = props.plotContent.scenario.map((item, index) => {
         if (item.type === 'questions') {
+          let recommendAnswer = ''
+          if (item.answer) {
+            recommendAnswer = item.answer
+          }
           return {
             id: `question-${index}`,
             content: (item.question || '') + (item.content && item.subtype !== 'free-type' ? Object.entries(item.content).map(([key, value]) => `\n${key}: ${value}`).join(' ') : ''),
             answer: props.answerResult?.[index]?.rawAnswer || '',
-            comment: props.answerResult?.[index]?.gradeResult?.comment || '',
+            comment: (recommendAnswer ? `參考答案：${recommendAnswer}\n` : '') + (props.answerResult?.[index]?.gradeResult?.comment || ''),
             score: props.answerResult?.[index]?.gradeResult?.score,
             type: 'questions',
             index: index
