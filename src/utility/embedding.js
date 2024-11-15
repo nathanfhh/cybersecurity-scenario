@@ -12,6 +12,7 @@ const calculatePrice = (model, tokens) => {
 }
 const cachedEmbeddings = {}
 export default async function requestEmbedding(text) {
+    text = text.trim()
     if (cachedEmbeddings[text]) {
         console.log("Using cached embedding for", text)
         return cachedEmbeddings[text]
