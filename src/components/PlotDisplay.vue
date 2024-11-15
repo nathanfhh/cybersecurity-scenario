@@ -189,12 +189,14 @@ const getFinalResultImageSrc = (averageScore) => {
           v-model="activeName"
           @tab-click="()=>{}"
           v-loading="isTabElementLoading"
+          :style="plotContent.scenario.length !== activeName ? 'height: 100%' : ''"
       >
         <el-tab-pane
             v-for="(item, index) in plotContent.scenario"
             :key="index"
             :label="index !== 0 ? index.toString(): '開始'"
             :name="index"
+            style="overflow: auto; height: 100%"
         >
           <div v-if="item.type === 'plot'">
             <ElRow>
