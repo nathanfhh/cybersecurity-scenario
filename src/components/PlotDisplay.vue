@@ -131,13 +131,18 @@ const averageScore = computed(() => {
   const totalScore = Object.values(answerModel).reduce((sum, item) => sum + item.gradeResult.score, 0)
   return totalScore / Object.keys(answerModel).length
 })
+const clearAnswerModel = () => {
+  for (const key in answerModel) {
+    delete answerModel[key];
+  }
+}
 watch(() => plotContent.value, (newValue) => {
   if (Object.keys(newValue).length > 0) {
     // 重設
     getImage(0)
     imageUsedFileNames = []
     activeName.value = 0
-    Object.assign(answerModel, {})
+    clearAnswerModel()
     newValue.scenario.forEach((item, index) => {
       if (item.type === 'questions') {
         answerModel[index] = {
