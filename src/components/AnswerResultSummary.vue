@@ -3,7 +3,7 @@ import markdownit from 'markdown-it';
 import hljs from 'highlight.js';
 import python from 'highlight.js/lib/languages/python';
 import 'highlight.js/styles/monokai-sublime.css';
-import {ref, watch} from "vue";
+import {computed, ref, watch} from "vue";
 
 hljs.registerLanguage('python', python);
 
@@ -29,36 +29,40 @@ const props = defineProps({
     required: true
   }
 })
-const columns = ref([
+let windowWidth = window.innerWidth;
+window.addEventListener('resize', () => {
+  windowWidth = window.innerWidth;
+})
+const columns = computed(() => [
   {
     key: 'index',
     title: '項目',
     dataKey: 'index',
-    width: 100
+    width: windowWidth / 11
   },
   {
     key: 'content',
     title: '指示',
     dataKey: 'content',
-    width: 300
+    width: windowWidth / 11 * 3
   },
   {
     key: 'answer',
     title: '您的回答',
     dataKey: 'answer',
-    width: 300
+    width: windowWidth / 11 * 3
   },
   {
     key: 'comment',
     title: '評語',
     dataKey: 'comment',
-    width: 300
+    width: windowWidth / 11 * 3
   },
   {
     key: 'score',
     title: '分數',
     dataKey: 'score',
-    width: 100
+    width: windowWidth / 11
   },
 ])
 const tableData = ref([])
@@ -104,7 +108,7 @@ watch(
             :width="width"
             :height="height"
             :fixed="true"
-            :estimated-row-height="250"
+            :estimated-row-height="50"
         >
           <template #cell="{ column, rowData }">
             <span v-if="!['index', 'score'].includes(column.dataKey)"
