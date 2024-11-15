@@ -9,7 +9,11 @@ const embedResult = ref("")
 const makeEmbedding = async () => {
   isLoading.value = true
   const embeddingResult = await requestEmbedding(textToEmbed.value)
-  embedResult.value = JSON.stringify(embeddingResult, null, 2)
+  embedResult.value = JSON.stringify(
+      {
+        embedding: embeddingResult['data'][0].embedding
+      }, null, 2
+  )
   isLoading.value = false
 }
 </script>

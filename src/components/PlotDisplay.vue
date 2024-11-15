@@ -10,8 +10,9 @@ import chatInference from "@/utility/chatInference.js";
 import rankEmbeddings from "@/utility/vector.js";
 import markdownit from 'markdown-it';
 import hljs from 'highlight.js';
-import python from 'highlight.js/lib/languages/python.js';
+import python from 'highlight.js/lib/languages/python';
 import 'highlight.js/styles/monokai-sublime.css';
+import AnswerResultSummary from "@/components/AnswerResultSummary.vue";
 
 hljs.registerLanguage('python', python);
 
@@ -135,6 +136,7 @@ watch(() => plotContent.value, (newValue) => {
     getImage(0)
     imageUsedFileNames = []
     activeName.value = 0
+    Object.assign(answerModel, {})
     newValue.scenario.forEach((item, index) => {
       if (item.type === 'questions') {
         answerModel[index] = {
@@ -156,10 +158,17 @@ function isNumeric(str) {
       !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
 }
 
+const getFinalImageByScore = (score) => {
+  if (score >= 70) {
+    return 'success.webp'
+  } else if (score >= 40) {
+    return 'failed.webp'
+  }
+  return 'failed-40.webp'
+}
 const getFinalResultImageSrc = (averageScore) => {
   const basePath = Object.keys(embedData)[0]
-  console.log(basePath)
-  return basePath.split('/').slice(0, -1).join('/') + '/' + (averageScore > 70 ? 'success.webp' : 'failed.webp')
+  return basePath.split('/').slice(0, -1).join('/') + '/' + getFinalImageByScore(averageScore)
 }
 </script>
 
@@ -176,67 +185,71 @@ const getFinalResultImageSrc = (averageScore) => {
           v-loading="isTabElementLoading"
       >
         <el-tab-pane
-
             v-for="(item, index) in plotContent.scenario"
             :key="index"
-            :label="index.toString()"
+            :label="index !== 0 ? index.toString(): '開始'"
             :name="index"
         >
-        <span v-if="item.type === 'plot'">
-          <span>{{ item.content }}</span>
-          <img v-if="imageChosen[index]" :src="imageChosen[index]" alt="plot" style="width: 100%; height: 100%"/>
-        </span>
-          <span v-else-if="item.type === 'questions'">
-          <div style="margin-bottom: 10px">
-            <ElAlert
-                :closable="false"
-                show-icon
-                v-if="isNumeric(answerModel[index]?.gradeResult?.score)"
-                :title="answerModel[index].gradeResult.score >= 80 ? '正確' : '錯誤'"
-                :type="answerModel[index].gradeResult.score >= 80 ? 'success' : 'error'"
-                :description="answerModel[index].gradeResult.comment"
-            />
+          <div v-if="item.type === 'plot'">
+            <ElRow>
+              <ElCol :span="12" style="padding: 10px">
+                <ElImage style="width: 100%;" :src="imageChosen[index]" fit="cover"/>
+              </ElCol>
+              <ElCol :span="12" style="padding: 10px">
+                <span v-html="md.render(item.content)"/>
+              </ElCol>
+            </ElRow>
           </div>
-          <div v-if="item.subtype === 'free-type'">
-            <span v-html="md.render(item.question)"/>
-            <ElInput
-                v-model="answerModel[index].rawAnswer"
-                placeholder="請提供您的看法"
-                type="textarea"
-                :rows="6"
-            />
-          </div>
-          <div v-else>
-            <span>{{ item.question }}</span>
-            <div>
-              <ElRadioGroup v-model="answerModel[index].rawAnswer" style="width: 100%">
-              <ElRadio
-                  size="large"
-                  border
-                  v-for="(content, optionKey)  in item.content"
-                  :key='optionKey'
-                  :value='optionKey'
-                  style="width: 100%; margin-top: 10px;"
-              >{{ content }}</ElRadio>
-            </ElRadioGroup>
+          <div v-else-if="item.type === 'questions'">
+            <div style="margin-bottom: 10px">
+              <ElAlert
+                  :closable="false"
+                  show-icon
+                  v-if="isNumeric(answerModel[index]?.gradeResult?.score)"
+                  :title="answerModel[index].gradeResult.score >= 80 ? '正確' : '錯誤'"
+                  :type="answerModel[index].gradeResult.score >= 80 ? 'success' : 'error'"
+                  :description="answerModel[index].gradeResult.comment"
+              />
+            </div>
+            <div v-html="md.render(item.question)"/>
+            <div v-if="item.subtype === 'free-type'">
+              <ElInput
+                  v-model="answerModel[index].rawAnswer"
+                  placeholder="請提供您的看法"
+                  type="textarea"
+                  :rows="6"
+              />
+            </div>
+            <div v-else>
+              <div>
+                <ElRadioGroup v-model="answerModel[index].rawAnswer" style="width: 100%">
+                  <ElRadio
+                      size="large"
+                      border
+                      v-for="(content, optionKey)  in item.content"
+                      :key='optionKey'
+                      :value='optionKey'
+                      style="width: 100%; margin-top: 10px; margin-right: 0"
+                  >{{ content }}
+                  </ElRadio>
+                </ElRadioGroup>
+              </div>
+            </div>
+            <div class="align-right">
+              <ElButton type="success" @click="gradeThis(index, item)">
+                批改
+              </ElButton>
             </div>
           </div>
-          <div class="align-right">
-            <ElButton type="success" @click="gradeThis(index, item)">
-              批改
-            </ElButton>
-          </div>
-        </span>
 
           <div class="align-right"
                v-show="item.type !== 'questions' || (item.type === 'questions' && isNumeric(answerModel[index]?.gradeResult?.score))">
             <ElButton type="primary" @click="nextTab(index)">
-              Next
+              下一頁
             </ElButton>
           </div>
         </el-tab-pane>
         <el-tab-pane
-            disabled
             label="總結"
             :name="plotContent.scenario.length"
             lazy
@@ -253,6 +266,7 @@ const getFinalResultImageSrc = (averageScore) => {
               />
             </template>
           </el-result>
+          <AnswerResultSummary :plot-content="plotContent" :answer-result="answerModel"/>
         </el-tab-pane>
       </el-tabs>
     </el-text>
@@ -266,7 +280,7 @@ const getFinalResultImageSrc = (averageScore) => {
 }
 </style>
 <style>
-pre > code.language-python   {
+pre > code.language-python {
   background-color: #282C34;
   padding: 15px;
   border-radius: 10px;
