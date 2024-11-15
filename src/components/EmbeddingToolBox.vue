@@ -1,10 +1,13 @@
 <script setup>
 import {ref} from "vue";
 import requestEmbedding from "@/utility/embedding.js";
+import {default as embedData} from "@/assets/embed-data.json";
+import rankEmbeddings from "@/utility/vector.js";
 
 const isLoading = ref(false)
 const textToEmbed = ref("")
 const embedResult = ref("")
+const imgURLList = ref([])
 
 const makeEmbedding = async () => {
   isLoading.value = true
@@ -15,6 +18,11 @@ const makeEmbedding = async () => {
       }, null, 2
   )
   isLoading.value = false
+  imgURLList.value = rankEmbeddings(
+      embeddingResult['data'][0].embedding, embedData
+  ).slice(0, 3).map(
+      (item) => item['fileName']
+  )
 }
 </script>
 
@@ -34,6 +42,10 @@ const makeEmbedding = async () => {
         type="textarea"
         placeholder="Embedding result"
     />
+    <div :key="src" v-for="(src, index) in imgURLList">
+      {{ index + 1 }}
+      <ElImage :src="src" fit="contain" style="width: 20vw;"/>
+    </div>
   </div>
 </template>
 
