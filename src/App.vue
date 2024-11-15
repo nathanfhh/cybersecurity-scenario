@@ -26,10 +26,10 @@ const {priceTotal} = storeToRefs(PriceStore)
   <OpenAPIKey/>
   <div class="container" v-show="openaiAPIKey">
     <div>
-      <EmbeddingToolBox/>
+      <EmbeddingToolBox style="width: calc(50vw - 30px);"/>
     </div>
     <div>
-      <PlotGenerator/>
+      <PlotGenerator style="width: calc(50vw - 30px);"/>
     </div>
   </div>
   <PlotDisplay v-show="plotContent"/>
@@ -39,8 +39,5 @@ const {priceTotal} = storeToRefs(PriceStore)
   display: flex;
   gap: 15px;
   justify-content: space-around;
-}
-* {
-  font-family: monospace;
 }
 </style>
