@@ -49,7 +49,7 @@ const gradeThis = async (index, item) => {
     }
     if (item.subtype === 'free-type') {
       try {
-        answerModel[index].gradeResult = await gradeUserAnswer(item.question, answerModel[index].rawAnswer)
+        answerModel[index].gradeResult = await gradeUserAnswer(item.question, answerModel[index].rawAnswer.trim())
       } catch (error) {
         console.error(error)
         ElMessage.error('批改失敗')
@@ -133,6 +133,7 @@ const averageScore = computed(() => {
 })
 watch(() => plotContent.value, (newValue) => {
   if (Object.keys(newValue).length > 0) {
+    // 重設
     getImage(0)
     imageUsedFileNames = []
     activeName.value = 0
@@ -177,7 +178,7 @@ const getFinalResultImageSrc = (averageScore) => {
       style="height: 100vh;"
       v-if="plotContent?.scenario?.length > 0"
   >
-    <el-text size="large">
+    <el-text size="large" style="font-size: 2rem !important;">
       <el-tabs
           stretch
           v-model="activeName"
@@ -241,7 +242,6 @@ const getFinalResultImageSrc = (averageScore) => {
               </ElButton>
             </div>
           </div>
-
           <div class="align-right"
                v-show="item.type !== 'questions' || (item.type === 'questions' && isNumeric(answerModel[index]?.gradeResult?.score))">
             <ElButton type="primary" @click="nextTab(index)">
@@ -277,6 +277,9 @@ const getFinalResultImageSrc = (averageScore) => {
 .align-right {
   text-align: right;
   margin-top: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 </style>
 <style>
