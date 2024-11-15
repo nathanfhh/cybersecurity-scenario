@@ -20,7 +20,7 @@ const makeEmbedding = async () => {
   isLoading.value = false
   imgURLList.value = rankEmbeddings(
       embeddingResult['data'][0].embedding, embedData
-  ).slice(0, 3).map(
+  ).slice(0, 5).map(
       (item) => item['fileName']
   )
 }
@@ -42,10 +42,13 @@ const makeEmbedding = async () => {
         type="textarea"
         placeholder="Embedding result"
     />
-    <div :key="src" v-for="(src, index) in imgURLList">
-      {{ index + 1 }}
-      <ElImage :src="src" fit="contain" style="width: 20vw;"/>
-    </div>
+    <el-carousel :interval="4000" type="card" height="200" >
+      <el-carousel-item :key="src" v-for="(src, index) in imgURLList">
+        {{ index + 1 }}
+        <br>
+        <ElImage :src="src" fit="contain" style="width: 20vw;"/>
+      </el-carousel-item>
+    </el-carousel>
   </div>
 </template>
 
