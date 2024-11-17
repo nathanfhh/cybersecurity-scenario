@@ -176,6 +176,22 @@ const getFinalResultImageSrc = (averageScore) => {
   const basePath = Object.keys(embedData)[0]
   return basePath.split('/').slice(0, -1).join('/') + '/' + getFinalImageByScore(averageScore)
 }
+const chooseIconForTab = (index) => {
+  if (index === 0) {
+    return '🏁'
+  }
+  const relevantPlot = plotContent.value?.scenario?.[index]
+  if (index < activeName.value) {
+    if (relevantPlot?.type === 'questions') {
+      const relevantAnswer = answerModel[index]
+      if (relevantAnswer?.gradeResult?.score >= 80) return '✅'
+      return '🙅🏻‍♀️'
+    }
+    if (relevantPlot?.type === 'plot') return '📖'
+  }
+
+  return ''
+}
 </script>
 
 <template>
@@ -194,10 +210,14 @@ const getFinalResultImageSrc = (averageScore) => {
         <el-tab-pane
             v-for="(item, index) in plotContent.scenario"
             :key="index"
-            :label="index !== 0 ? index.toString(): '開始'"
             :name="index"
             style="overflow: auto; height: 100%"
         >
+          <template #label>
+            <span class="custom-tabs-label">
+              <span>{{ index !== 0 ? index.toString() : '開始' }} {{ chooseIconForTab(index) }}</span>
+            </span>
+          </template>
           <div v-if="item.type === 'plot'">
             <ElRow>
               <ElCol :span="12" style="padding: 10px">
