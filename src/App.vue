@@ -19,7 +19,7 @@ const {priceTotal} = storeToRefs(PriceStore)
 <template>
   <div style="position: relative">
     <div style="position: absolute; top: 1px; right: 1px">
-      {{ priceTotal }}
+      🇹🇼 NT $: {{ priceTotal }}
       <ElButton v-show="priceTotal > 0" type="danger" @click="PriceStore.$reset()" size="small" style="padding: 8px 16px !important;">歸零</ElButton>
     </div>
   </div>
