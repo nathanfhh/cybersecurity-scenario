@@ -14,6 +14,7 @@ import python from 'highlight.js/lib/languages/python';
 import 'highlight.js/styles/monokai-sublime.css';
 import AnswerResultSummary from "@/components/AnswerResultSummary.vue";
 import DisplayMedia from "@/components/DisplayMedia.vue";
+import ConfettiExplosion from "vue-confetti-explosion";
 
 hljs.registerLanguage('python', python);
 
@@ -36,6 +37,7 @@ const activeName = ref(0)
 const imageChosen = reactive({})
 let imageUsedFileNames = [];
 const isTabElementLoading = ref(false)
+const showConfetti = ref(false)
 
 const gradeThis = async (index, item) => {
   isTabElementLoading.value = true
@@ -71,6 +73,7 @@ const nextTab = async (index) => {
   try {
     isTabElementLoading.value = true
     await getImage(index + 1)
+    showConfetti.value = index + 1 === plotContent.value.scenario.length;
   } catch (error) {
     console.error(error)
   } finally {
@@ -193,6 +196,9 @@ const chooseIconForTab = (index) => {
 
   return ''
 }
+const windowHeight = window.innerHeight
+const windowWidth = window.innerWidth * 2
+const isFinalScorePassed = computed(() => averageScore.value >= 70)
 </script>
 
 <template>
@@ -282,9 +288,11 @@ const chooseIconForTab = (index) => {
             :name="plotContent.scenario.length"
             lazy
         >
+          <ConfettiExplosion :force="0" :particleCount="200" v-if="isFinalScorePassed && showConfetti"
+                             :stageWidth="windowWidth" :stageHeight="windowHeight"/>
           <el-result
-              :icon="averageScore >= 70 ? 'success' : 'error'"
-              :title="averageScore >= 70 ? '成功' : '失敗'"
+              :icon="isFinalScorePassed ? 'success' : 'error'"
+              :title="isFinalScorePassed ? '成功' : '失敗'"
               :sub-title="`分數： ${averageScore.toFixed(2) }`"
           >
             <template #extra>
