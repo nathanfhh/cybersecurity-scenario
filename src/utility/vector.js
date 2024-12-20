@@ -11,9 +11,10 @@ export default function rankEmbeddings(targetEmbedding, embeddings) {
     console.log(embeddings)
     return Object.entries(embeddings)
         .map(([fileName, {embedding}]) => {
+            let weight = fileName.endsWith("webp") ? 1 : 1.03;
             return {
                 fileName,
-                similarity: cosineSimilarity(targetEmbedding, embedding)
+                similarity: cosineSimilarity(targetEmbedding, embedding) * weight
             }
         })
         .sort((a, b) => b.similarity - a.similarity); // Sort in descending order of similarity
