@@ -13,6 +13,7 @@ import hljs from 'highlight.js';
 import python from 'highlight.js/lib/languages/python';
 import 'highlight.js/styles/monokai-sublime.css';
 import AnswerResultSummary from "@/components/AnswerResultSummary.vue";
+import DisplayMedia from "@/components/DisplayMedia.vue";
 
 hljs.registerLanguage('python', python);
 
@@ -221,7 +222,7 @@ const chooseIconForTab = (index) => {
           <div v-if="item.type === 'plot'">
             <ElRow>
               <ElCol :span="12" style="padding: 10px">
-                <ElImage style="width: 100%;" :src="imageChosen[index]" fit="cover"/>
+                <DisplayMedia :file-name="imageChosen[index]"/>
               </ElCol>
               <ElCol :span="12" style="padding: 10px">
                 <span v-html="md.render(item.content)"/>

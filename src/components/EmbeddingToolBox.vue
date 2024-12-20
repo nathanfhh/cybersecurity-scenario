@@ -3,6 +3,7 @@ import {ref} from "vue";
 import requestEmbedding from "@/utility/embedding.js";
 import {default as embedData} from "@/assets/embed-data.json";
 import rankEmbeddings from "@/utility/vector.js";
+import DisplayMedia from "@/components/DisplayMedia.vue";
 
 const isLoading = ref(false)
 const textToEmbed = ref("")
@@ -42,11 +43,11 @@ const makeEmbedding = async () => {
         type="textarea"
         placeholder="Embedding result"
     />
-    <el-carousel :interval="4000" type="card" height="200" >
+    <el-carousel :interval="4000" type="card" height="200">
       <el-carousel-item :key="src" v-for="(src, index) in imgURLList">
         {{ index + 1 }}
         <br>
-        <ElImage :src="src" fit="contain" style="width: 20vw;"/>
+        <DisplayMedia :file-name="src"/>
       </el-carousel-item>
     </el-carousel>
   </div>
