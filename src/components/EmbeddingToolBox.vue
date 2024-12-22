@@ -43,9 +43,9 @@ const makeEmbedding = async () => {
         type="textarea"
         placeholder="Embedding result"
     />
-    <el-carousel :interval="4000" type="card" height="200">
+    <el-carousel :interval="4000" type="card" height="200" v-show="imgURLList.length > 0">
       <el-carousel-item :key="src" v-for="(src, index) in imgURLList">
-        {{ index + 1 }}
+        {{ index + 1 }}. {{ src.split("/").pop() }}
         <br>
         <DisplayMedia :file-name="src"/>
       </el-carousel-item>
