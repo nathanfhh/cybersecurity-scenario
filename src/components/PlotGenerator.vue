@@ -1,6 +1,6 @@
 <script setup>
 import {storeToRefs} from "pinia";
-import {ref} from "vue";
+import {nextTick, ref} from "vue";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {z} from "zod";
 import {usePlotStore} from "@/stores/plot.js";
@@ -52,7 +52,10 @@ const generatePlot = async () => {
     )
     outputResult.value = JSON.stringify(chatCompletion, null, 2)
     ElMessage.success('生成劇情成功，花費 ' + price + ' 元')
+    plotStore.$reset()
     plotContent.value = JSON.parse(chatCompletion.choices[0].message.content)
+    await nextTick()
+    document.getElementById("mainPlot").scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"})
   } catch (error) {
     console.error(error)
     ElMessageBox.alert('生成劇情失敗', '錯誤')
