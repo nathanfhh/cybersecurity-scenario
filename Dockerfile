@@ -10,3 +10,4 @@ RUN npm install && npm run build
 FROM nginx:1.27-alpine
 ENV PROJECT_NAME=CSTT
 COPY --from=builder /root/$PROJECT_NAME/dist /usr/share/nginx/html
+COPY src/assets /usr/share/nginx/html/src/assets
