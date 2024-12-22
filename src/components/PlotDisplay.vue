@@ -205,6 +205,7 @@ const isFinalScorePassed = computed(() => averageScore.value >= 70)
   <div
       style="height: 100vh;"
       v-if="plotContent?.scenario?.length > 0"
+      id="mainPlot"
   >
     <el-text size="large" style="font-size: 2rem !important;">
       <el-tabs
@@ -228,7 +229,7 @@ const isFinalScorePassed = computed(() => averageScore.value >= 70)
           <div v-if="item.type === 'plot'">
             <ElRow>
               <ElCol :span="12" style="padding: 10px">
-                <DisplayMedia :file-name="imageChosen[index]"/>
+                <DisplayMedia :file-name="imageChosen[index]" v-if="imageChosen[index]"/>
               </ElCol>
               <ElCol :span="12" style="padding: 10px">
                 <span v-html="md.render(item.content)"/>
