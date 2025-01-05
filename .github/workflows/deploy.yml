@@ -23,9 +23,8 @@ jobs:
           ref: ${{ github.ref }}
       - name: Install Dependencies
         run: |
-          cd ai-json-form
           npm install
-          npm run github 
+          npm run build
           cp -r src/assets dist/assets
 
       - name: Deploy to GitHub Pages
