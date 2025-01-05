@@ -24,5 +24,10 @@ jobs:
           npm install
           npm run build
           cp -r src/assets dist/assets
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload dist folder
+          path: "./dist"
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
