@@ -17,7 +17,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1>{{ i18n('openAIAPIKey') }}</h1>
+  <h1>{{ i18n('openAIAPIKey') }}<br>
+  <span class="warning">{{ i18n('openAIAPIKeyInLocalStorageWarning') }}</span>
+  </h1>
   <ElInput
       v-model="apiKey"
       @change="syncToLocalStorage"
@@ -27,5 +29,8 @@ onMounted(() => {
 </template>
 
 <style scoped>
-
+.warning {
+  color: yellow;
+  font-size: 0.6em;
+}
 </style>

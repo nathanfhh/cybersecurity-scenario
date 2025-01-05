@@ -5,6 +5,7 @@ import {useLanguageStore} from "@/stores/language.js";
 const en = {
     "resetMoney": "Reset",
     "openAIAPIKey": "OpenAI API Key",
+    "openAIAPIKeyInLocalStorageWarning": "The OpenAI API key is stored in the local storage of the browser, remember to clear the key after use if you are using a public computer.",
     "embeddingToolBox": "Embedding Tool Box",
     "plotGenerator": "Plot Generator",
     "enterBasicPlot": "Please enter Basic Plot",
@@ -43,6 +44,7 @@ const en = {
 const zhTw = {
     "resetMoney": "歸零",
     "openAIAPIKey": "OpenAI API 金鑰",
+    "openAIAPIKeyInLocalStorageWarning": "OpenAI API 金鑰儲存在瀏覽器的本地儲存中，如果您使用的是公共電腦，請記得在使用後清除金鑰。",
     "embeddingToolBox": "Embedding 工具箱",
     "plotGenerator": "劇情產生器",
     "enterBasicPlot": "請輸入基本劇情",
