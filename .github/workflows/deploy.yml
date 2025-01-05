@@ -19,17 +19,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref }}
       - name: Install Dependencies
         run: |
           cd ai-json-form
           npm install
           npm run github 
           cp -r src/assets dist/assets
-
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+        uses: actions/deploy-pages@v4
