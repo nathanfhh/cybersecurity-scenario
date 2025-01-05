@@ -1,5 +1,5 @@
 {
-  "src/assets/images/scenes/male-0/code-review.webp": {
+  "src/assets/images/scenes/set-0/code-review.webp": {
     "embedding": [
       0.017395424,
       0.048214782,
@@ -1539,7 +1539,7 @@
       0.03130297
     ]
   },
-  "src/assets/images/scenes/male-0/discuss.webp": {
+  "src/assets/images/scenes/set-0/discuss.webp": {
     "embedding": [
       0.016116805,
       0.005048288,
@@ -3079,7 +3079,7 @@
       0.015594568
     ]
   },
-  "src/assets/images/scenes/male-0/discuss-concerned.webp": {
+  "src/assets/images/scenes/set-0/discuss-concerned.webp": {
     "embedding": [
       0.03475993,
       0.0012661577,
@@ -4619,7 +4619,7 @@
       0.015913531
     ]
   },
-  "src/assets/images/scenes/male-0/incident-hits.webp": {
+  "src/assets/images/scenes/set-0/incident-hits.webp": {
     "embedding": [
       0.0072356756,
       0.03725924,
@@ -6159,7 +6159,7 @@
       0.0089485375
     ]
   },
-  "src/assets/images/scenes/male-0/people-code-review.webp": {
+  "src/assets/images/scenes/set-0/people-code-review.webp": {
     "embedding": [
       -0.0027516314,
       0.031241298,
@@ -7699,7 +7699,7 @@
       0.0005997773
     ]
   },
-  "src/assets/images/scenes/male-0/reading-logs.webp": {
+  "src/assets/images/scenes/set-0/reading-logs.webp": {
     "embedding": [
       -0.005261652,
       0.012082037,
@@ -9239,7 +9239,7 @@
       0.01302175
     ]
   },
-  "src/assets/images/scenes/male-0/security-center.webp": {
+  "src/assets/images/scenes/set-0/security-center.webp": {
     "embedding": [
       0.013569731,
       0.019546188,
@@ -10779,7 +10779,7 @@
       -0.020715494
     ]
   },
-  "src/assets/images/scenes/male-0/stressed-announcement.webp": {
+  "src/assets/images/scenes/set-0/stressed-announcement.webp": {
     "embedding": [
       0.018399974,
       0.013590053,
@@ -12319,7 +12319,7 @@
       0.0013092855
     ]
   },
-  "src/assets/images/scenes/male-0/viewing-logs.webp": {
+  "src/assets/images/scenes/set-0/viewing-logs.webp": {
     "embedding": [
       0.026502142,
       0.0036080773,
@@ -13859,7 +13859,7 @@
       -0.0055238036
     ]
   },
-  "src/assets/images/scenes/male-0/training.webp": {
+  "src/assets/images/scenes/set-0/training.webp": {
     "embedding": [
       0.017175885,
       -0.0019056086,
@@ -15399,7 +15399,7 @@
       -0.02413045
     ]
   },
-  "src/assets/images/scenes/male-0/bug-found.webp": {
+  "src/assets/images/scenes/set-0/bug-found.webp": {
     "embedding": [
       0.02301427,
       0.035415817,
@@ -16939,7 +16939,7 @@
       0.0061481623
     ]
   },
-  "src/assets/images/scenes/male-0/new-policy.webp": {
+  "src/assets/images/scenes/set-0/new-policy.webp": {
     "embedding": [
       0.03878656,
       0.037339535,
@@ -18479,7 +18479,7 @@
       -0.010852687
     ]
   },
-  "src/assets/images/scenes/male-0/scanning-software.webp": {
+  "src/assets/images/scenes/set-0/scanning-software.webp": {
     "embedding": [
       0.006657233,
       0.0396386,
@@ -20019,7 +20019,7 @@
       0.012927894
     ]
   },
-  "src/assets/images/scenes/male-0/in-server-room.webp": {
+  "src/assets/images/scenes/set-0/in-server-room.webp": {
     "embedding": [
       -0.004428178,
       0.023783542,
@@ -21559,7 +21559,7 @@
       0.03736574
     ]
   },
-  "src/assets/images/scenes/male-0/focus-coding.webp": {
+  "src/assets/images/scenes/set-0/focus-coding.webp": {
     "embedding": [
       0.008095984,
       0.016535208,
@@ -23099,7 +23099,7 @@
       0.006491711
     ]
   },
-  "src/assets/images/scenes/male-0/ransomware.webp": {
+  "src/assets/images/scenes/set-0/ransomware.webp": {
     "embedding": [
       -0.008777084,
       0.022890197,
@@ -24639,7 +24639,7 @@
       -0.015994405
     ]
   },
-  "src/assets/images/scenes/male-0/tensed-meeting.webp": {
+  "src/assets/images/scenes/set-0/tensed-meeting.webp": {
     "embedding": [
       0.004467679,
       0.04823201,
@@ -26179,7 +26179,7 @@
       -0.0034082108
     ]
   },
-  "src/assets/images/scenes/male-0/answering-press.webp": {
+  "src/assets/images/scenes/set-0/answering-press.webp": {
     "embedding": [
       0.039905168,
       -0.022419289,
@@ -27719,7 +27719,7 @@
       -0.0069366973
     ]
   },
-  "src/assets/images/scenes/male-0/emergency-call.webp": {
+  "src/assets/images/scenes/set-0/emergency-call.webp": {
     "embedding": [
       -0.01927138,
       0.018046873,
@@ -29259,7 +29259,7 @@
       -0.021647502
     ]
   },
-  "src/assets/images/scenes/male-0/alerts.webp": {
+  "src/assets/images/scenes/set-0/alerts.webp": {
     "embedding": [
       -0.022282843,
       0.055707105,
@@ -30799,7 +30799,7 @@
       -0.005240182
     ]
   },
-  "src/assets/images/scenes/male-0/night-call.webp": {
+  "src/assets/images/scenes/set-0/night-call.webp": {
     "embedding": [
       0.010584787,
       0.006000315,
@@ -32339,7 +32339,7 @@
       0.0037131843
     ]
   },
-  "src/assets/images/scenes/male-0/hospital-worker.webp": {
+  "src/assets/images/scenes/set-0/hospital-worker.webp": {
     "embedding": [
       -0.0018976508,
       0.008197323,
@@ -33879,7 +33879,7 @@
       0.020615313
     ]
   },
-  "src/assets/images/scenes/male-0/airline.webp": {
+  "src/assets/images/scenes/set-0/airline.webp": {
     "embedding": [
       -0.017433122,
       0.010242272,
@@ -35419,7 +35419,7 @@
       0.0016007458
     ]
   },
-  "src/assets/images/scenes/male-0/train.webp": {
+  "src/assets/images/scenes/set-0/train.webp": {
     "embedding": [
       -0.0044839396,
       -0.009504759,
@@ -36959,7 +36959,7 @@
       0.0042221276
     ]
   },
-  "src/assets/images/scenes/male-0/pentest.webp": {
+  "src/assets/images/scenes/set-0/pentest.webp": {
     "embedding": [
       0.0066851703,
       0.018662443,
@@ -38499,7 +38499,7 @@
       0.014094113
     ]
   },
-  "src/assets/images/scenes/male-0/into-server-room.webp": {
+  "src/assets/images/scenes/set-0/into-server-room.webp": {
     "embedding": [
       0.0047899433,
       0.011441382,
@@ -40039,7 +40039,7 @@
       0.0074194935
     ]
   },
-  "src/assets/images/scenes/male-0/digital-forensic.webp": {
+  "src/assets/images/scenes/set-0/digital-forensic.webp": {
     "embedding": [
       0.019773036,
       0.05089726,
@@ -41579,7 +41579,7 @@
       0.002503317
     ]
   },
-  "src/assets/videos/scenes/male-0/siem_dashboard.webm": {
+  "src/assets/videos/scenes/set-0/siem_dashboard.webm": {
     "embedding": [
       0.008389284,
       -0.008170377,
@@ -43119,7 +43119,7 @@
       0.009986017
     ]
   },
-  "src/assets/videos/scenes/male-0/education.webm": {
+  "src/assets/videos/scenes/set-0/education.webm": {
     "embedding": [
       0.004205599,
       -0.019203963,
@@ -44659,7 +44659,7 @@
       -0.026307363
     ]
   },
-  "src/assets/videos/scenes/male-0/server-room-alert.webm": {
+  "src/assets/videos/scenes/set-0/server-room-alert.webm": {
     "embedding": [
       -0.03311524,
       0.02945063,
@@ -46199,7 +46199,7 @@
       -0.0072222254
     ]
   },
-  "src/assets/videos/scenes/male-0/code_review.webm": {
+  "src/assets/videos/scenes/set-0/code_review.webm": {
     "embedding": [
       -0.024539057,
       0.020695053,
@@ -47739,7 +47739,7 @@
       -0.012850599
     ]
   },
-  "src/assets/videos/scenes/male-0/security_audit.webm": {
+  "src/assets/videos/scenes/set-0/security_audit.webm": {
     "embedding": [
       -0.005428274,
       0.03922977,
@@ -49279,7 +49279,7 @@
       0.00318285
     ]
   },
-  "src/assets/videos/scenes/male-0/soc_analyst.webm": {
+  "src/assets/videos/scenes/set-0/soc_analyst.webm": {
     "embedding": [
       -0.025611332,
       0.009133736,
@@ -50819,7 +50819,7 @@
       0.04526154
     ]
   },
-  "src/assets/videos/scenes/male-0/siem_alert.webm": {
+  "src/assets/videos/scenes/set-0/siem_alert.webm": {
     "embedding": [
       -0.023313802,
       0.007245293,
@@ -52359,7 +52359,7 @@
       -0.028849678
     ]
   },
-  "src/assets/videos/scenes/male-0/defaced.webm": {
+  "src/assets/videos/scenes/set-0/defaced.webm": {
     "embedding": [
       0.000104519546,
       0.020087563,
@@ -53899,7 +53899,7 @@
       -0.008828755
     ]
   },
-  "src/assets/videos/scenes/male-0/airplane-collide.webm": {
+  "src/assets/videos/scenes/set-0/airplane-collide.webm": {
     "embedding": [
       -0.032508135,
       0.013178211,
@@ -55439,7 +55439,7 @@
       0.0024215314
     ]
   },
-  "src/assets/videos/scenes/male-0/emergency-call.webm": {
+  "src/assets/videos/scenes/set-0/emergency-call.webm": {
     "embedding": [
       -0.05090455,
       -0.026327197,
@@ -56979,7 +56979,7 @@
       -0.015661104
     ]
   },
-  "src/assets/videos/scenes/male-0/shocked-by-code.webm": {
+  "src/assets/videos/scenes/set-0/shocked-by-code.webm": {
     "embedding": [
       0.0028480033,
       -0.0005134793,
@@ -58519,7 +58519,7 @@
       -0.036774218
     ]
   },
-  "src/assets/videos/scenes/male-0/surrounded-alerts.webm": {
+  "src/assets/videos/scenes/set-0/surrounded-alerts.webm": {
     "embedding": [
       -0.023126611,
       0.0036975269,
@@ -60059,7 +60059,7 @@
       -0.004315578
     ]
   },
-  "src/assets/videos/scenes/male-0/team-discuss-code.webm": {
+  "src/assets/videos/scenes/set-0/team-discuss-code.webm": {
     "embedding": [
       -0.0075858613,
       0.01713258,
@@ -61599,7 +61599,7 @@
       -0.00053487386
     ]
   },
-  "src/assets/videos/scenes/male-0/train-control-panel.webm": {
+  "src/assets/videos/scenes/set-0/train-control-panel.webm": {
     "embedding": [
       -0.041931123,
       0.028875088,
