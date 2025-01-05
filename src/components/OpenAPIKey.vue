@@ -2,6 +2,7 @@
 import {onMounted, ref} from "vue";
 import {useOpenAPIKeyStore} from "@/stores/apikey.js";
 import {storeToRefs} from "pinia";
+import i18n from "@/utility/i18n.js";
 
 const apiKey = ref("")
 const OpenAPIKeyStore = useOpenAPIKeyStore()
@@ -16,12 +17,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1>OpenAI API Key</h1>
+  <h1>{{ i18n('openAIAPIKey') }}</h1>
   <ElInput
       v-model="apiKey"
       @change="syncToLocalStorage"
       show-password
-      placeholder="OpenAI API Key"
+      :placeholder="i18n('openAIAPIKey')"
   />
 </template>
 

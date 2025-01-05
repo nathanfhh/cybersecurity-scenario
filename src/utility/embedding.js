@@ -2,14 +2,13 @@ import OpenAI from "openai";
 import {useOpenAPIKeyStore} from "@/stores/apikey.js";
 import {usePriceStore} from "@/stores/price.js";
 import {storeToRefs} from "pinia";
-import {oneUsdToNtd} from "@/utility/pricing.js";
 
 
 const calculatePrice = (model, tokens) => {
     const mapper = {
         "text-embedding-3-small": 0.02 / 1e6
     }
-    return mapper[model] * tokens * oneUsdToNtd
+    return mapper[model] * tokens
 }
 const cachedEmbeddings = {}
 export default async function requestEmbedding(text) {

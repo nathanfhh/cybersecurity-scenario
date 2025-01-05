@@ -1,4 +1,6 @@
 <script setup>
+import i18n from "@/utility/i18n.js";
+
 const props = defineProps({
   fileName: {
     type: String,
@@ -13,7 +15,7 @@ const props = defineProps({
     <video loop autoplay muted playsinline
            v-else-if="props.fileName.endsWith('webm')" style="width: 100%">
       <source :src="props.fileName" type="video/webm">
-      您的瀏覽器不支援影片播放
+      {{ i18n("browserNotSupportVideo") }}
     </video>
   </template>
 </template>

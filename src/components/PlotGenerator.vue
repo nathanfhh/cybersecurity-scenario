@@ -5,13 +5,16 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import {z} from "zod";
 import {usePlotStore} from "@/stores/plot.js";
 import chatInference from "@/utility/chatInference.js";
+import i18n from "@/utility/i18n.js";
+import {useLanguageStore} from "@/stores/language.js";
 
 const isLoading = ref(false)
 const plotStore = usePlotStore()
 const {plotContent} = storeToRefs(plotStore)
 const outputResult = ref("")
 const basicPlot = ref("")
-
+const LanguageStore = useLanguageStore()
+const {useZhTw} = storeToRefs(LanguageStore)
 
 // Define the JSON schema for the structured scenario response
 const PlotSchema = z.object({
@@ -36,29 +39,80 @@ const QuestionSchema = z.object({
 const ScenarioSchema = z.object({
   scenario: z.array(z.union([PlotSchema, QuestionSchema]))
 });
+const systemPrompt = `
+Create an educational cybersecurity scenario by expanding a basic event into a cohesive sequence of eight checkpoints. Each checkpoint should have a plot segment followed by engaging cybersecurity questions that test knowledge, critical thinking, and skills.
 
+Expand on the provided scenario, ensuring realism and relevance to cybersecurity, and make the educational flow interactive and informative. Each plot segment and question should build upon the previous one, driving the storyline forward.
+
+**Output Structure**: Provide the content as an array using this JSON structure:
+
+\`\`\`json
+{
+  "scenario": [
+    {
+      "type": "plot",
+      "subtype": null,
+      "content": "Description of the current scenario stage."
+    },
+    {
+      "type": "questions",
+      "subtype": "true-false",
+      "question": "A cybersecurity question about the scenario.",
+      "content": {
+        "A": "True",
+        "B": "False"
+      },
+      "answer": "A",  // or "B" depending on the correct answer
+      "reason": "The reason why to choose A instead of B"
+    },
+    {
+      "type": "questions",
+      "subtype": "multiple-choice",
+      "question": "A multiple-choice question based on the scenario.",
+      "content": {
+        "A": "Option A content",
+        "B": "Option B content",
+        "C": "Option C content",
+        "D": "Option D content"
+      },
+      "answer": "A",  // key of the correct choice
+      "reason": "The reason why to choose A instead of other choice"
+    },
+    {
+      "type": "questions",
+      "subtype": "free-type",
+      "question": "A free-response question that requires a critical answer.",
+      "content": null,
+      "answer": ""  // left blank for free-type responses
+    }
+  ]
+}
+\`\`\`
+
+Must generate at least one code review questions in Python by giving a code snippet and ask the user to point out the issues in the code implementations.
+It is okay for user to provide non-cybersecurity related scenario.
+
+`
 const generatePlot = async () => {
   isLoading.value = true
   const useModel = 'gpt-4o-mini'
   try {
     const {chatCompletion, price} = await chatInference(
-        window.atob("Q3JlYXRlIGFuIGVkdWNhdGlvbmFsIGN5YmVyc2VjdXJpdHkgc2NlbmFyaW8gYnkgZXhwYW5kaW5nIGEgYmFzaWMgZXZlbnQgaW50byBhIGNvaGVzaXZlIHNlcXVlbmNlIG9mIGVpZ2h0IGNoZWNrcG9pbnRzLiBFYWNoIGNoZWNrcG9pbnQgc2hvdWxkIGhhdmUgYSBwbG90IHNlZ21lbnQgZm9sbG93ZWQgYnkgZW5nYWdpbmcgY3liZXJzZWN1cml0eSBxdWVzdGlvbnMgdGhhdCB0ZXN0IGtub3dsZWRnZSwgY3JpdGljYWwgdGhpbmtpbmcsIGFuZCBza2lsbHMuCgpFeHBhbmQgb24gdGhlIHByb3ZpZGVkIHNjZW5hcmlvLCBlbnN1cmluZyByZWFsaXNtIGFuZCByZWxldmFuY2UgdG8gY3liZXJzZWN1cml0eSwgYW5kIG1ha2UgdGhlIGVkdWNhdGlvbmFsIGZsb3cgaW50ZXJhY3RpdmUgYW5kIGluZm9ybWF0aXZlLiBFYWNoIHBsb3Qgc2VnbWVudCBhbmQgcXVlc3Rpb24gc2hvdWxkIGJ1aWxkIHVwb24gdGhlIHByZXZpb3VzIG9uZSwgZHJpdmluZyB0aGUgc3RvcnlsaW5lIGZvcndhcmQuCgoqKk91dHB1dCBTdHJ1Y3R1cmUqKjogUHJvdmlkZSB0aGUgY29udGVudCBhcyBhbiBhcnJheSB1c2luZyB0aGlzIEpTT04gc3RydWN0dXJlOgoKYGBganNvbgp7CiAgInNjZW5hcmlvIjogWwogICAgewogICAgICAidHlwZSI6ICJwbG90IiwKICAgICAgInN1YnR5cGUiOiBudWxsLAogICAgICAiY29udGVudCI6ICJEZXNjcmlwdGlvbiBvZiB0aGUgY3VycmVudCBzY2VuYXJpbyBzdGFnZS4iCiAgICB9LAogICAgewogICAgICAidHlwZSI6ICJxdWVzdGlvbnMiLAogICAgICAic3VidHlwZSI6ICJ0cnVlLWZhbHNlIiwKICAgICAgInF1ZXN0aW9uIjogIkEgY3liZXJzZWN1cml0eSBxdWVzdGlvbiBhYm91dCB0aGUgc2NlbmFyaW8uIiwKICAgICAgImNvbnRlbnQiOiB7CiAgICAgICAgIkEiOiAiVHJ1ZSIsCiAgICAgICAgIkIiOiAiRmFsc2UiCiAgICAgIH0sCiAgICAgICJhbnN3ZXIiOiAiQSIsICAvLyBvciAiQiIgZGVwZW5kaW5nIG9uIHRoZSBjb3JyZWN0IGFuc3dlcgogICAgICAicmVhc29uIjogIlRoZSByZWFzb24gd2h5IHRvIGNob29zZSBBIGluc3RlYWQgb2YgQiIKICAgIH0sCiAgICB7CiAgICAgICJ0eXBlIjogInF1ZXN0aW9ucyIsCiAgICAgICJzdWJ0eXBlIjogIm11bHRpcGxlLWNob2ljZSIsCiAgICAgICJxdWVzdGlvbiI6ICJBIG11bHRpcGxlLWNob2ljZSBxdWVzdGlvbiBiYXNlZCBvbiB0aGUgc2NlbmFyaW8uIiwKICAgICAgImNvbnRlbnQiOiB7CiAgICAgICAgIkEiOiAiT3B0aW9uIEEgY29udGVudCIsCiAgICAgICAgIkIiOiAiT3B0aW9uIEIgY29udGVudCIsCiAgICAgICAgIkMiOiAiT3B0aW9uIEMgY29udGVudCIsCiAgICAgICAgIkQiOiAiT3B0aW9uIEQgY29udGVudCIKICAgICAgfSwKICAgICAgImFuc3dlciI6ICJBIiwgIC8vIGtleSBvZiB0aGUgY29ycmVjdCBjaG9pY2UKICAgICAgInJlYXNvbiI6ICJUaGUgcmVhc29uIHdoeSB0byBjaG9vc2UgQSBpbnN0ZWFkIG9mIG90aGVyIGNob2ljZSIKICAgIH0sCiAgICB7CiAgICAgICJ0eXBlIjogInF1ZXN0aW9ucyIsCiAgICAgICJzdWJ0eXBlIjogImZyZWUtdHlwZSIsCiAgICAgICJxdWVzdGlvbiI6ICJBIGZyZWUtcmVzcG9uc2UgcXVlc3Rpb24gdGhhdCByZXF1aXJlcyBhIGNyaXRpY2FsIGFuc3dlci4iLAogICAgICAiY29udGVudCI6IG51bGwsCiAgICAgICJhbnN3ZXIiOiAiIiAgLy8gbGVmdCBibGFuayBmb3IgZnJlZS10eXBlIHJlc3BvbnNlcwogICAgfQogIF0KfQpgYGA=")
-        + "\nMust generate at least one code review questions in Python by giving a code snippet and ask the user to point out the issues in the code implementations."
-        + "\nMust Use 正體中文 with 台灣用語習慣 to answer, 如果存在專有名詞，請保留原文。",
+        systemPrompt + `\nMust Use ${useZhTw.value ? "正體中文 and 台灣用語習慣" : "english"} to answer, 如果存在專有名詞，請保留原文。`,
         basicPlot.value,
         useModel,
         ScenarioSchema,
         "scenario"
     )
     outputResult.value = JSON.stringify(chatCompletion, null, 2)
-    ElMessage.success('生成劇情成功，花費 ' + price + ' 元')
+    ElMessage.success(i18n('costAmountXToGeneratePlot', {price}))
     plotStore.$reset()
     plotContent.value = JSON.parse(chatCompletion.choices[0].message.content)
     await nextTick()
     document.getElementById("mainPlot").scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"})
   } catch (error) {
     console.error(error)
-    ElMessageBox.alert('生成劇情失敗', '錯誤')
+    ElMessageBox.alert(i18n('failToGeneratePlot'), i18n('error'))
   } finally {
     isLoading.value = false
   }
@@ -67,19 +121,22 @@ const generatePlot = async () => {
 
 <template>
   <div v-loading="isLoading">
-    <h1>Plot Generator</h1>
+    <h1>{{ i18n('plotGenerator') }}</h1>
     <ElInput
         v-model="basicPlot"
         :rows="5"
         type="textarea"
-        placeholder="Please input basic plot"/>
-    <ElButton @click="generatePlot" type="success" :disabled="!basicPlot">產生劇情</ElButton>
-    <ElButton v-if="plotContent?.scenario?.length > 0" @click="plotStore.$reset()" type="danger">清空劇情</ElButton>
+        :placeholder="i18n('enterBasicPlot')"/>
+    <ElButton @click="generatePlot" type="success" :disabled="!basicPlot">{{ i18n('generatePlot') }}</ElButton>
+    <ElButton v-if="plotContent?.scenario?.length > 0" @click="plotStore.$reset()" type="danger">{{
+        i18n('clearPlot')
+      }}
+    </ElButton>
     <ElInput
         v-model="outputResult"
         :rows="10"
         type="textarea"
-        placeholder="Output result"/>
+        :placeholder="i18n('plotOutput')"/>
   </div>
 </template>
 

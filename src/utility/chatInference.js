@@ -3,7 +3,6 @@ import {usePriceStore} from "@/stores/price.js";
 import {storeToRefs} from "pinia";
 import {useOpenAPIKeyStore} from "@/stores/apikey.js";
 import {zodResponseFormat} from "openai/helpers/zod";
-import {oneUsdToNtd} from "@/utility/pricing.js";
 
 
 const calculatePrice = (model, usage) => {
@@ -14,7 +13,7 @@ const calculatePrice = (model, usage) => {
         }
     }
     const price = mapper[model]
-    return (price.prompt_tokens * usage.prompt_tokens + price.completion_tokens * usage.completion_tokens) * oneUsdToNtd
+    return (price.prompt_tokens * usage.prompt_tokens + price.completion_tokens * usage.completion_tokens)
 }
 
 

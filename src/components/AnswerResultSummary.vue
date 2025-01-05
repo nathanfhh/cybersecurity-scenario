@@ -4,6 +4,7 @@ import hljs from 'highlight.js';
 import python from 'highlight.js/lib/languages/python';
 import 'highlight.js/styles/monokai-sublime.css';
 import {computed, ref, watch} from "vue";
+import i18n from "@/utility/i18n.js";
 
 hljs.registerLanguage('python', python);
 
@@ -36,31 +37,31 @@ window.addEventListener('resize', () => {
 const columns = computed(() => [
   {
     key: 'index',
-    title: '項目',
+    title: i18n('listIndex'),
     dataKey: 'index',
     width: windowWidth / 11
   },
   {
     key: 'content',
-    title: '指示',
+    title: i18n('plotQuestion'),
     dataKey: 'content',
     width: windowWidth / 11 * 3
   },
   {
     key: 'answer',
-    title: '您的回答',
+    title: i18n('yourAnswer'),
     dataKey: 'answer',
     width: windowWidth / 11 * 3
   },
   {
     key: 'comment',
-    title: '解析',
+    title: i18n('gradeComment'),
     dataKey: 'comment',
     width: windowWidth / 11 * 3
   },
   {
     key: 'score',
-    title: '分數',
+    title: i18n('score'),
     dataKey: 'score',
     width: windowWidth / 11
   },
@@ -80,7 +81,7 @@ watch(
             id: `question-${index}`,
             content: (item.question || '') + (item.content && item.subtype !== 'free-type' ? Object.entries(item.content).map(([key, value]) => `\n${key}: ${value}`).join(' ') : ''),
             answer: props.answerResult?.[index]?.rawAnswer || '',
-            comment: (recommendAnswer ? `參考答案：${recommendAnswer}\n` : '') + (props.answerResult?.[index]?.gradeResult?.comment || ''),
+            comment: (recommendAnswer ? `${i18n('referenceAnswer')}：${recommendAnswer}\n` : '') + (props.answerResult?.[index]?.gradeResult?.comment || ''),
             score: props.answerResult?.[index]?.gradeResult?.score,
             type: 'questions',
             index: index
@@ -115,10 +116,11 @@ watch(
             :estimated-row-height="50"
         >
           <template #cell="{ column, rowData }">
-            <span v-if="!['index', 'score'].includes(column.dataKey)"
+            <span class="overflow-scroll"
+                  v-if="!['index', 'score'].includes(column.dataKey)"
                   v-html="md.render(rowData[column.dataKey] || '').replaceAll('\n', '<br>')"
             />
-            <span v-else>{{ rowData[column.dataKey] }}</span>
+            <span v-else class="overflow-scroll">{{ rowData[column.dataKey] }}</span>
           </template>
         </el-table-v2>
       </template>
@@ -127,5 +129,7 @@ watch(
 </template>
 
 <style scoped>
-
+.overflow-scroll {
+  overflow: auto;
+}
 </style>

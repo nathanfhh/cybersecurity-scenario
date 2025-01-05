@@ -15,6 +15,8 @@ import 'highlight.js/styles/monokai-sublime.css';
 import AnswerResultSummary from "@/components/AnswerResultSummary.vue";
 import DisplayMedia from "@/components/DisplayMedia.vue";
 import ConfettiExplosion from "vue-confetti-explosion";
+import i18n from "@/utility/i18n.js";
+import {useLanguageStore} from "@/stores/language.js";
 
 hljs.registerLanguage('python', python);
 
@@ -38,13 +40,15 @@ const imageChosen = reactive({})
 let imageUsedFileNames = [];
 const isTabElementLoading = ref(false)
 const showConfetti = ref(false)
+const LanguageStore = useLanguageStore()
+const {useZhTw} = storeToRefs(LanguageStore)
 
 const gradeThis = async (index, item) => {
   isTabElementLoading.value = true
   if (item.type === 'questions') {
     if (!answerModel[index].rawAnswer) {
-      ElMessageBox.alert('請回答問題', '提示', {
-        confirmButtonText: '確定',
+      ElMessageBox.alert(i18n('pleaseEnterQuestion'), i18n('warning'), {
+        confirmButtonText: i18n('confirm'),
         type: 'warning'
       });
       isTabElementLoading.value = false
@@ -55,7 +59,7 @@ const gradeThis = async (index, item) => {
         answerModel[index].gradeResult = await gradeUserAnswer(item.question, answerModel[index].rawAnswer.trim())
       } catch (error) {
         console.error(error)
-        ElMessage.error('批改失敗')
+        ElMessage.error(i18n('gradingFailed'))
         return
       }
     } else {
@@ -64,7 +68,7 @@ const gradeThis = async (index, item) => {
         comment: item.reason || ''
       }
     }
-    ElMessage.success('批改完成')
+    ElMessage.success(i18n('gradeDone'))
     isTabElementLoading.value = false
   }
 }
@@ -114,7 +118,8 @@ The user may provide a short answer to the question, which is acceptable.
 Provide the evaluation in JSON format with:
 - score: a value between 0 and 100, with 80 being the passing score.
 - comment: a concise and precise evaluation, around 150 words.
-Use 正體中文 and 台灣用語習慣 to answer.`
+Use ${useZhTw.value ? "正體中文 and 台灣用語習慣" : "english"} to answer.`
+
   const userPrompt = `Here is the question and the user's answer:
 Question: "${question}"
 User's Answer: "${userAnswer}"
@@ -223,7 +228,7 @@ const isFinalScorePassed = computed(() => averageScore.value >= 70)
         >
           <template #label>
             <span class="custom-tabs-label">
-              <span>{{ index !== 0 ? index.toString() : '開始' }} {{ chooseIconForTab(index) }}</span>
+              <span>{{ index !== 0 ? index.toString() : i18n("start") }} {{ chooseIconForTab(index) }}</span>
             </span>
           </template>
           <div v-if="item.type === 'plot'">
@@ -242,7 +247,7 @@ const isFinalScorePassed = computed(() => averageScore.value >= 70)
                   :closable="false"
                   show-icon
                   v-if="isNumeric(answerModel[index]?.gradeResult?.score)"
-                  :title="answerModel[index].gradeResult.score >= 80 ? '正確' : '錯誤'"
+                  :title="answerModel[index].gradeResult.score >= 80 ? i18n('correct') : i18n('incorrect')"
                   :type="answerModel[index].gradeResult.score >= 80 ? 'success' : 'error'"
                   :description="answerModel[index].gradeResult.comment"
               />
@@ -251,7 +256,7 @@ const isFinalScorePassed = computed(() => averageScore.value >= 70)
             <div v-if="item.subtype === 'free-type'">
               <ElInput
                   v-model="answerModel[index].rawAnswer"
-                  placeholder="請提供您的看法"
+                  :placeholder="i18n('provideYourThought')"
                   type="textarea"
                   :rows="6"
               />
@@ -273,19 +278,19 @@ const isFinalScorePassed = computed(() => averageScore.value >= 70)
             </div>
             <div class="align-right">
               <ElButton type="success" @click="gradeThis(index, item)">
-                批改
+                {{ i18n('checkAnswer') }}
               </ElButton>
             </div>
           </div>
           <div class="align-right"
                v-show="item.type !== 'questions' || (item.type === 'questions' && isNumeric(answerModel[index]?.gradeResult?.score))">
             <ElButton type="primary" @click="nextTab(index)">
-              下一頁
+              {{ i18n('nextPage') }}
             </ElButton>
           </div>
         </el-tab-pane>
         <el-tab-pane
-            label="總結"
+            :label="i18n('summary')"
             :name="plotContent.scenario.length"
             lazy
         >
@@ -293,8 +298,8 @@ const isFinalScorePassed = computed(() => averageScore.value >= 70)
                              :stageWidth="windowWidth" :stageHeight="windowHeight"/>
           <el-result
               :icon="isFinalScorePassed ? 'success' : 'error'"
-              :title="isFinalScorePassed ? '成功' : '失敗'"
-              :sub-title="`分數： ${averageScore.toFixed(2) }`"
+              :title="isFinalScorePassed ? i18n('success') : i18n('failed')"
+              :sub-title="`${i18n('score')}： ${averageScore.toFixed(2) }`"
           >
             <template #extra>
               <img
