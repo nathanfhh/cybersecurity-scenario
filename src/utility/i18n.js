@@ -38,7 +38,7 @@ const en = {
     "yourAnswer": "Your Answer",
     "gradeComment": "Comment",
     "referenceAnswer": "Reference Answer",
-    "costAmountXToGeneratePlot": "Cost $ {price} for generating plot",
+    "costAmountXToGeneratePlot": "Cost US$ {price} for generating plot",
     "failToGeneratePlot": "Fail to generate plot",
 }
 const zhTw = {
@@ -76,7 +76,7 @@ const zhTw = {
     "yourAnswer": "您的答案",
     "gradeComment": "評語",
     "referenceAnswer": "參考答案",
-    "costAmountXToGeneratePlot": "花費 $ {price} 生成劇情",
+    "costAmountXToGeneratePlot": "花費 $ {price} 美金生成劇情",
     "failToGeneratePlot": "無法產生劇情",
     "error": "錯誤",
 }

@@ -8,6 +8,15 @@ This project is a web application based on Vue 3 and Vite, used to generate and 
 - Answer Scoring: Automatically score based on user answers and provide feedback.
 - Multi-language Support: Supports English and Traditional Chinese.
 
+- [POC Video](https://youtu.be/mBxa85ZHAy0)
+<br> ![Youtube Thumbnail](http://img.youtube.com/vi/mBxa85ZHAy0/0.jpg)
+- [Try it out](https://nathanfhh.github.io/cybersecurity-scenario/)
+  - Step 1: Generate OpenAI API key and paste it into the input box.
+  - Step 2: Provide basic plot and click "Generate Plot" button.
+  - Step 3: Within 15 seconds or so, the generated multi-stage plots along with the questions will be displayed.
+  - Step 4: Read the plots and answer the questions.
+  - Step 5: Get the feedback from the LLM model everytime you submit your answers.
+  
 ## Configuration
 
 Please refer to [Vite Configuration Reference](https://vite.dev/config/).
@@ -74,7 +83,15 @@ docker run -p 80:80 llm-cybersec-learning
 - 劇情生成：使用 OpenAI 的 GPT 模型生成網路安全學習場景。
 - 答案評分：根據使用者的回答自動評分並提供反饋。
 - 多語言支持：支持英文和正體中文。
-
+- [POC 錄影](https://youtu.be/mBxa85ZHAy0)
+<br> ![Youtube Thumbnail](http://img.youtube.com/vi/mBxa85ZHAy0/0.jpg)
+- [前往試用](https://nathanfhh.github.io/cybersecurity-scenario/)
+  - 步驟 1: 產生 OpenAI API 金鑰並貼上網頁輸入框
+  - 步驟 2: 提供基礎劇情，並按下「產生劇情」的按鈕
+  - 步驟 3: 劇情會在 15 秒左右完成生成，並於網頁最下方呈現「多階段劇情」和「互動式作答」
+  - 步驟 4: 閱讀劇情並回答問題
+  - 步驟 5: 在每次提交答案後，都會得到 LLM 模型提供的回饋
+  
 ## 配置
 
 請參考 [Vite 配置參考](https://vite.dev/config/).
