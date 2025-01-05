@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "github": "vite build --mode github",
     "preview": "vite preview",
     "lint": "eslint . --fix",
     "format": "prettier --write src/"
@@ -29,6 +30,7 @@
     "eslint-plugin-vue": "^9.30.0",
     "prettier": "^3.3.3",
     "rollup-plugin-copy": "^3.5.0",
+    "terser": "^5.37.0",
     "vite": "^5.4.10",
     "vite-plugin-vue-devtools": "^7.5.4"
   }

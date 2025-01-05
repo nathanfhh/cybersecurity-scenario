@@ -22,7 +22,7 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install
-          npm run build
+          npm run github
           cp -r src/assets dist/assets
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
