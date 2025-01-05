@@ -23,7 +23,7 @@ jobs:
         run: |
           npm install
           npm run github
-          cp -r src/assets dist/assets
+          cp -r src/assets dist/src/assets
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
